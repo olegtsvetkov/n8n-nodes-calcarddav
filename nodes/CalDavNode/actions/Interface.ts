@@ -1,7 +1,7 @@
 import {AllEntities, Entity, PropertiesOf} from "n8n-workflow";
 
 type CalDavMap = {
-	calendar: 'fetchEvents' | 'createEvent'
+	calendar: 'fetchEvents' | 'fetchEventByUrl' | 'createEvent'
 	event: 'deleteEvent'
 }
 
