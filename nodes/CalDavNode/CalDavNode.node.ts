@@ -4,6 +4,7 @@ import {
 	INodeExecutionData,
 	INodeType,
 	INodeTypeDescription, NodeOperationError,
+	NodeConnectionType,
 } from 'n8n-workflow';
 import {calendar, event} from "./actions";
 import {loadOptions} from "./methods";
@@ -27,8 +28,8 @@ export class CalDavNode implements INodeType {
 				required: false,
 			},
 		],
-		inputs: ['main'],
-		outputs: ['main'],
+		inputs: ['main'] as NodeConnectionType[],
+		outputs: ['main'] as NodeConnectionType[],
 		properties: [
 			{
 				displayName: 'Resource',
