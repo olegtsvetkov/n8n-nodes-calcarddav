@@ -1,10 +1,8 @@
-import {IExecuteFunctions, INodeExecutionData} from "n8n-workflow";
+import {IExecuteFunctions, INodeExecutionData, NodeOperationError} from "n8n-workflow";
 import {createClient} from "../../../../../transport/davClient";
 import {DAVCalendar, DAVCalendarObject} from "tsdav";
-import { CalendarComponent, VEvent } from "../../../ical";
-
-// @ts-ignore
-import ical from "ical";
+import { IcsCalendar } from "ts-ics";
+import { parseIcsCalendar } from "@ts-ics/schema-zod";
 
 export async function fetchObject(this: IExecuteFunctions, index: number): Promise<INodeExecutionData[]> {
 	const client = await createClient(this, 'caldav');
@@ -25,17 +23,24 @@ export async function fetchObject(this: IExecuteFunctions, index: number): Promi
 
 	// Parse to events
 	const events = response.map(r => {
-		const data = Object.values<CalendarComponent>(ical.parseICS(r.data));
-		const events = data.filter((item) => item.type === 'VEVENT') as VEvent[];
+		const icsData: string = r.data as string;
+
+		const calendarParsed: IcsCalendar = parseIcsCalendar(icsData);
 
 		return {
 			url: r.url,
 			etag: r.etag,
-			event: events[0]
+			data: icsData,
+			event: calendarParsed.events?.[0] ?? null
 		};
 	});
 
-	return this.helpers.returnJsonArray({
-		events: events,
-	});
+	if (events.length !== 1) {
+		throw new NodeOperationError(
+			this.getNode(),
+			`Unable to fetch event in calendar "${calendar!.displayName}" by "${needleEventUrl}" url`,
+		);
+	}
+
+	return this.helpers.returnJsonArray(events[0]);
 }

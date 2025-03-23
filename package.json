@@ -55,8 +55,8 @@
     "typescript": "^5.5.3"
   },
   "dependencies": {
-    "ical": "^0.8.0",
-    "ics": "^3.8.1",
+    "@ts-ics/schema-zod": "^2.0.0",
+    "ts-ics": "^2.0.1",
     "tsdav": "^2.1.2",
     "uuid": "^11.0.3",
     "vcf": "^2.1.2"

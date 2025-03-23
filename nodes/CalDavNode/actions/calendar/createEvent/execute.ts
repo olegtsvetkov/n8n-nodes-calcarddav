@@ -1,11 +1,8 @@
 import {IExecuteFunctions, INodeExecutionData, NodeOperationError} from "n8n-workflow";
 import {createClient} from "../../../../../transport/davClient";
 import {DAVCalendar} from "tsdav";
-import {EventAttributes, createEvent as icsCreateEvent} from "ics";
+import { type IcsEvent, type IcsCalendar, generateIcsCalendar } from "ts-ics";
 import { v4 as uuidv4 } from 'uuid';
-
-// @ts-ignore
-import ical from "ical"
 import { FormatDatetime } from "../../../methods";
 
 export async function createEvent(this: IExecuteFunctions, index: number): Promise<INodeExecutionData[]> {
@@ -29,7 +26,7 @@ export async function createEvent(this: IExecuteFunctions, index: number): Promi
 	let startDate = new Date(FormatDatetime(eventStartDate));
 	let endDate = new Date(FormatDatetime(eventEndDate));
 
-	var event: EventAttributes
+	var event: IcsEvent
 
 	if (eventIsAllDay === 'yes') {
 		const aDayInMs = 24 * 60 * 60 * 1000;
@@ -37,14 +34,16 @@ export async function createEvent(this: IExecuteFunctions, index: number): Promi
 
 		event = {
 			uid: uuidv4(),
-			title: eventTitle,
+			summary: eventTitle,
 			description: eventDescription,
 			status: 'CONFIRMED',
-			start: [
-				startDate.getFullYear(),
-				startDate.getMonth() + 1,
-				startDate.getDate(),
-			],
+			stamp: {
+				date: new Date,
+			},
+			start: {
+				date: startDate,
+				type: "DATE"
+			},
 			duration: {
 				days: daysDiff + 1,
 			},
@@ -52,33 +51,28 @@ export async function createEvent(this: IExecuteFunctions, index: number): Promi
 	} else {
 		event = {
 			uid: uuidv4(),
-			title: eventTitle,
+			summary: eventTitle,
 			description: eventDescription,
 			status: 'CONFIRMED',
-			start: [
-				startDate.getFullYear(),
-				startDate.getMonth() + 1,
-				startDate.getDate(),
-				startDate.getHours(),
-				startDate.getMinutes(),
-			],
-			end: [
-				endDate.getFullYear(),
-				endDate.getMonth() + 1,
-				endDate.getDate(),
-				endDate.getHours(),
-				endDate.getMinutes(),
-			],
+			stamp: {
+				date: new Date,
+			},
+			start: {
+				date: startDate,
+			},
+			end: {
+				date: endDate,
+			},
 		}
 	}
 
-	const { error, value: iCalString } = icsCreateEvent(event);
-	if (error) {
-		throw new NodeOperationError(
-			this.getNode(),
-			`Unable to create iCalendar event`,
-		);
+	const icsCalendar: IcsCalendar = {
+		version: "2.0",
+		prodId: "n8n-nodes-calcarddav",
+		events: [event],
 	}
+
+	const iCalString = generateIcsCalendar(icsCalendar);
 
 	// Perform event creation on remote server
 	const result = await client.createCalendarObject({
