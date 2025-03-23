@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 // @ts-ignore
 import ical from "ical"
+import { FormatDatetime } from "../../../methods";
 
 export async function createEvent(this: IExecuteFunctions, index: number): Promise<INodeExecutionData[]> {
 	const eventTitle = this.getNodeParameter('event_title', index) as string;
@@ -25,8 +26,8 @@ export async function createEvent(this: IExecuteFunctions, index: number): Promi
 	const eventStartDate = this.getNodeParameter('event_start_date', index) as string;
 	const eventEndDate = this.getNodeParameter('event_end_date', index) as string;
 
-	let startDate = new Date(eventStartDate + 'Z');
-	let endDate = new Date(eventEndDate + 'Z');
+	let startDate = new Date(FormatDatetime(eventStartDate));
+	let endDate = new Date(FormatDatetime(eventEndDate));
 
 	var event: EventAttributes
 

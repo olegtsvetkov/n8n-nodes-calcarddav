@@ -5,16 +5,17 @@ import { CalendarComponent, VEvent } from "../../../ical";
 
 // @ts-ignore
 import ical from "ical";
+import { FormatDatetime } from "../../../methods";
 
 export async function fetchObjects(this: IExecuteFunctions, index: number): Promise<INodeExecutionData[]> {
 	const client = await createClient(this, 'caldav');
 	const calendarObjectUrl = this.getNodeParameter('calendar', index);
-	const startDateString = this.getNodeParameter('start_date', index) as string;
-	const endDateString = this.getNodeParameter('end_date', index) as string;
+	const startDateLeftString = this.getNodeParameter('start_date_left', index) as string;
+	const startDateRightString = this.getNodeParameter('start_date_right', index) as string;
 
 	// parse string to date in utc
-	const startDate = new Date(startDateString + 'Z');
-	const endDate = new Date(endDateString + 'Z');
+	const leftDate = new Date(FormatDatetime(startDateLeftString));
+	const rightDate = new Date(FormatDatetime(startDateRightString));
 
 	// Retrieve calendars
 	const calendars: DAVCalendar[] = await client.fetchCalendars();
@@ -26,8 +27,8 @@ export async function fetchObjects(this: IExecuteFunctions, index: number): Prom
 	const response: DAVCalendarObject[] = await client.fetchCalendarObjects({
 		calendar: calendar,
 		timeRange: {
-			start: startDate.toISOString(),
-			end: endDate.toISOString()
+			start: leftDate.toISOString(),
+			end: rightDate.toISOString()
 		}
 	});
 

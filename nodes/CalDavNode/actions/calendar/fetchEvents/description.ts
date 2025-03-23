@@ -17,11 +17,11 @@ export const description: CalendarProperties = [
 				operation: ['fetchEvents']
 			}
 		},
-		description: 'Calendar to work with. Choose from the list, or specify an URL using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+		description: 'Calendar to work with. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 	},
 	{
-		displayName: 'Start Date',
-		name: 'start_date',
+		displayName: 'Event Starts On or After',
+		name: 'start_date_left',
 		type: 'dateTime',
 		default: '',
 		required: true,
@@ -30,12 +30,11 @@ export const description: CalendarProperties = [
 				operation: ['fetchEvents'],
 			},
 		},
-		description: 'Start date of interval to fetch object from calendar',
-		hint: 'Date should be in UTC',
+		description: 'Specific date and time in RFC3339 format in UTC',
 	},
 	{
-		displayName: 'End Date',
-		name: 'end_date',
+		displayName: 'Event Starts Before',
+		name: 'start_date_right',
 		type: 'dateTime',
 		default: '',
 		required: true,
@@ -44,7 +43,6 @@ export const description: CalendarProperties = [
 				operation: ['fetchEvents'],
 			},
 		},
-		description: 'End date of interval to fetch object from calendar',
-		hint: 'Date should be in UTC',
+		description: 'Specific date and time in RFC3339 format in UTC',
 	}
 ]

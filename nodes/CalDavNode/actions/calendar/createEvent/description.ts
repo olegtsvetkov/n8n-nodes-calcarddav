@@ -54,7 +54,7 @@ export const description: CalendarProperties = [
 		},
 	},
 	{
-		displayName: 'Start Date',
+		displayName: 'Event Start At',
 		name: 'event_start_date',
 		type: 'dateTime',
 		default: '',
@@ -64,11 +64,10 @@ export const description: CalendarProperties = [
 				operation: ['createEvent'],
 			},
 		},
-		hint: 'Date should be in UTC',
-		description: 'Time is ignored for all-day events'
+		description: 'Specific date and time in RFC3339 format in UTC'
 	},
 	{
-		displayName: 'End Date',
+		displayName: 'Event Ends At',
 		name: 'event_end_date',
 		type: 'dateTime',
 		default: '',
@@ -78,8 +77,7 @@ export const description: CalendarProperties = [
 				operation: ['createEvent'],
 			},
 		},
-		hint: 'Date should be in UTC',
-		description: 'Date when event ends. Time is ignored for all-day events. For all-day events, this should be the last day (same as start date for 1 day events).',
+		description: 'Specific date and time in RFC3339 format in UTC',
 	},
 	{
 		displayName: 'Description',
