@@ -90,4 +90,299 @@ export const description: CalendarProperties = [
 			},
 		},
 	},
+	{
+		displayName: 'Location',
+		name: 'event_location',
+		type: 'string',
+		default: '',
+		displayOptions: {
+			show: {
+				operation: ['createEvent'],
+			},
+		},
+		description: 'Location of the event',
+	},
+	{
+		displayName: 'URL',
+		name: 'event_url',
+		type: 'string',
+		default: '',
+		displayOptions: {
+			show: {
+				operation: ['createEvent'],
+			},
+		},
+		description: 'URL associated with the event',
+	},
+	{
+		displayName: 'Categories',
+		name: 'event_categories',
+		type: 'string',
+		default: '',
+		displayOptions: {
+			show: {
+				operation: ['createEvent'],
+			},
+		},
+		description: 'Event categories (comma-separated)',
+	},
+	{
+		displayName: 'Priority',
+		name: 'event_priority',
+		type: 'options',
+		options: [
+			{
+				name: 'Low',
+				value: '0',
+			},
+			{
+				name: 'Medium',
+				value: '5',
+			},
+			{
+				name: 'High',
+				value: '9',
+			},
+		],
+		default: '5',
+		displayOptions: {
+			show: {
+				operation: ['createEvent'],
+			},
+		},
+		description: 'Event priority',
+	},
+	{
+		displayName: 'Status',
+		name: 'event_status',
+		type: 'options',
+		options: [
+			{
+				name: 'Confirmed',
+				value: 'CONFIRMED',
+			},
+			{
+				name: 'Cancelled',
+				value: 'CANCELLED',
+			},
+			{
+				name: 'Tentative',
+				value: 'TENTATIVE',
+			},
+		],
+		default: 'CONFIRMED',
+		displayOptions: {
+			show: {
+				operation: ['createEvent'],
+			},
+		},
+		description: 'Event status',
+	},
+	{
+		displayName: 'Transparency',
+		name: 'event_transparency',
+		type: 'options',
+		options: [
+			{
+				name: 'Busy',
+				value: 'OPAQUE',
+			},
+			{
+				name: 'Free',
+				value: 'TRANSPARENT',
+			},
+		],
+		default: 'OPAQUE',
+		displayOptions: {
+			show: {
+				operation: ['createEvent'],
+			},
+		},
+		description: 'Shows whether the user is busy during the event',
+	},
+	{
+		displayName: 'Attendees',
+		name: 'event_attendees',
+		type: 'fixedCollection',
+		typeOptions: {
+			multipleValues: true,
+		},
+		default: {},
+		displayOptions: {
+			show: {
+				operation: ['createEvent'],
+			},
+		},
+		options: [
+			{
+				displayName: 'Attendee',
+				name: 'attendee',
+				values: [
+					{
+						displayName: 'Email',
+						name: 'email',
+						type: 'string',
+						default: '',
+						required: true,
+					},
+					{
+						displayName: 'Name',
+						name: 'name',
+						type: 'string',
+						default: '',
+					},
+					{
+						displayName: 'RSVP',
+						name: 'rsvp',
+						type: 'boolean',
+						default: false,
+					},
+				],
+			},
+		],
+		description: 'Event attendees',
+	},
+	{
+		displayName: 'Recurrence',
+		name: 'event_recurrence',
+		type: 'fixedCollection',
+		default: {},
+		displayOptions: {
+			show: {
+				operation: ['createEvent'],
+			},
+		},
+		options: [
+			{
+				displayName: 'Recurrence Rule',
+				name: 'recurrenceRule',
+				values: [
+					{
+						displayName: 'Frequency',
+						name: 'freq',
+						type: 'options',
+						options: [
+							{
+								name: 'Daily',
+								value: 'DAILY',
+							},
+							{
+								name: 'Weekly',
+								value: 'WEEKLY',
+							},
+							{
+								name: 'Monthly',
+								value: 'MONTHLY',
+							},
+							{
+								name: 'Yearly',
+								value: 'YEARLY',
+							},
+						],
+						default: 'DAILY',
+					},
+					{
+						displayName: 'Interval',
+						name: 'interval',
+						type: 'number',
+						default: 1,
+						description: 'Recurrence interval',
+					},
+					{
+						displayName: 'Count',
+						name: 'count',
+						type: 'number',
+						default: 0,
+						description: 'Number of occurrences (0 for infinite)',
+					},
+					{
+						displayName: 'Until',
+						name: 'until',
+						type: 'dateTime',
+						default: '',
+						description: 'End date of recurrence',
+					},
+				],
+			},
+		],
+		description: 'Event recurrence rules',
+	},
+	{
+		displayName: 'Alarms',
+		name: 'event_alarms',
+		type: 'fixedCollection',
+		typeOptions: {
+			multipleValues: true,
+		},
+		default: {},
+		displayOptions: {
+			show: {
+				operation: ['createEvent'],
+			},
+		},
+		options: [
+			{
+				displayName: 'Alarm',
+				name: 'alarm',
+				values: [
+					{
+						displayName: 'Trigger',
+						name: 'trigger',
+						type: 'options',
+						options: [
+							{
+								name: 'Before Start',
+								value: 'before',
+							},
+							{
+								name: 'At Start',
+								value: 'start',
+							},
+							{
+								name: 'After Start',
+								value: 'after',
+							},
+						],
+						default: 'before',
+					},
+					{
+						displayName: 'Duration',
+						name: 'duration',
+						type: 'number',
+						default: 15,
+						description: 'Time in minutes',
+					},
+					{
+						displayName: 'Action',
+						name: 'action',
+						type: 'options',
+						options: [
+							{
+								name: 'Display',
+								value: 'DISPLAY',
+							},
+							{
+								name: 'Email',
+								value: 'EMAIL',
+							},
+						],
+						default: 'DISPLAY',
+					},
+				],
+			},
+		],
+		description: 'Event reminders',
+	},
+	{
+		displayName: 'Color',
+		name: 'event_color',
+		type: 'color',
+		default: '',
+		displayOptions: {
+			show: {
+				operation: ['createEvent'],
+			},
+		},
+		description: 'Event color in HEX format',
+	},
 ]

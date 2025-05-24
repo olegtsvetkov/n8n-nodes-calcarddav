@@ -1,14 +1,32 @@
 import {IExecuteFunctions, INodeExecutionData, NodeOperationError} from "n8n-workflow";
 import {createClient} from "../../../../../transport/davClient";
 import {DAVCalendar} from "tsdav";
-import { type IcsEvent, type IcsCalendar, generateIcsCalendar } from "ts-ics";
+import { 
+	type IcsEvent, 
+	type IcsCalendar, 
+	generateIcsCalendar, 
+	type IcsDateObject
+} from "ts-ics";
 import { v4 as uuidv4 } from 'uuid';
 import { FormatDatetime } from "../../../methods";
+
+type EventStatus = 'TENTATIVE' | 'CONFIRMED' | 'CANCELLED';
 
 export async function createEvent(this: IExecuteFunctions, index: number): Promise<INodeExecutionData[]> {
 	const eventTitle = this.getNodeParameter('event_title', index) as string;
 	const eventDescription = this.getNodeParameter('event_description', index) as string;
 	const eventIsAllDay = this.getNodeParameter('event_is_all_day', index) as string;
+	const eventLocation = this.getNodeParameter('event_location', index) as string;
+	const eventUrl = this.getNodeParameter('event_url', index) as string;
+	const eventCategories = this.getNodeParameter('event_categories', index) as string;
+	const eventStatus = this.getNodeParameter('event_status', index) as EventStatus;
+	const eventAttendees = this.getNodeParameter('event_attendees', index) as {
+		attendee: Array<{
+			email: string;
+			name?: string;
+			rsvp?: boolean;
+		}>;
+	};
 
 	const client = await createClient(this, 'caldav');
 	const calendarObjectUrl = this.getNodeParameter('calendar', index);
@@ -26,20 +44,41 @@ export async function createEvent(this: IExecuteFunctions, index: number): Promi
 	let startDate = new Date(FormatDatetime(eventStartDate));
 	let endDate = new Date(FormatDatetime(eventEndDate));
 
-	var event: IcsEvent
+	// Prepare base event object
+	const baseEvent: Partial<IcsEvent> = {
+		uid: uuidv4(),
+		summary: eventTitle,
+		description: eventDescription,
+		status: eventStatus || 'CONFIRMED',
+		stamp: {
+			date: new Date(),
+		},
+		location: eventLocation,
+		url: eventUrl,
+	};
+
+	// Add categories if provided
+	if (eventCategories) {
+		baseEvent.categories = eventCategories.split(',').map(cat => cat.trim());
+	}
+
+	// Add attendees if provided
+	if (eventAttendees?.attendee?.length) {
+		baseEvent.attendees = eventAttendees.attendee.map(attendee => ({
+			email: attendee.email,
+			name: attendee.name,
+			rsvp: attendee.rsvp,
+		}));
+	}
+
+	let event: IcsEvent;
 
 	if (eventIsAllDay === 'yes') {
 		const aDayInMs = 24 * 60 * 60 * 1000;
 		const daysDiff = Math.abs(Math.ceil((startDate.getTime() - endDate.getTime()) / aDayInMs));
 
 		event = {
-			uid: uuidv4(),
-			summary: eventTitle,
-			description: eventDescription,
-			status: 'CONFIRMED',
-			stamp: {
-				date: new Date,
-			},
+			...baseEvent,
 			start: {
 				date: startDate,
 				type: "DATE"
@@ -47,23 +86,17 @@ export async function createEvent(this: IExecuteFunctions, index: number): Promi
 			duration: {
 				days: daysDiff + 1,
 			},
-		};
+		} as IcsEvent;
 	} else {
 		event = {
-			uid: uuidv4(),
-			summary: eventTitle,
-			description: eventDescription,
-			status: 'CONFIRMED',
-			stamp: {
-				date: new Date,
-			},
+			...baseEvent,
 			start: {
 				date: startDate,
 			},
 			end: {
 				date: endDate,
 			},
-		}
+		} as IcsEvent;
 	}
 
 	const icsCalendar: IcsCalendar = {
