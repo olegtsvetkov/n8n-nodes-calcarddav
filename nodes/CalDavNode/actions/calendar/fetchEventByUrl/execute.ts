@@ -1,8 +1,7 @@
 import {IExecuteFunctions, INodeExecutionData, NodeOperationError} from "n8n-workflow";
 import {createClient} from "../../../../../transport/davClient";
-import {DAVCalendar, DAVCalendarObject} from "tsdav";
-import { IcsCalendar } from "ts-ics";
-import { parseIcsCalendar } from "@ts-ics/schema-zod";
+import {DAVCalendar} from "tsdav";
+import { createEventExecutionData, parseCalendarObject } from "../methods";
 
 export async function fetchObject(this: IExecuteFunctions, index: number): Promise<INodeExecutionData[]> {
 	const client = await createClient(this, 'caldav');
@@ -16,31 +15,34 @@ export async function fetchObject(this: IExecuteFunctions, index: number): Promi
 	});
 
 	// Retrieve calendar objects
-	const response: DAVCalendarObject[] = await client.fetchCalendarObjects({
+	const response = await client.fetchCalendarObjects({
 		calendar: calendar,
 		objectUrls: [needleEventUrl],
 	});
 
-	// Parse to events
-	const events = response.map(r => {
-		const icsData: string = r.data as string;
-
-		const calendarParsed: IcsCalendar = parseIcsCalendar(icsData);
-
-		return {
-			url: r.url,
-			etag: r.etag,
-			data: icsData,
-			event: calendarParsed.events?.[0] ?? null
-		};
-	});
-
-	if (events.length !== 1) {
+	if (response.length !== 1) {
 		throw new NodeOperationError(
 			this.getNode(),
 			`Unable to fetch event in calendar "${calendar!.displayName}" by "${needleEventUrl}" url`,
 		);
 	}
 
-	return this.helpers.returnJsonArray(events[0]);
+	const calendarObject = response[0];
+	const parseResult = parseCalendarObject(calendarObject);
+
+	if (!parseResult.success) {
+		throw new NodeOperationError(
+			this.getNode(),
+			parseResult.error || 'Failed to parse calendar data'
+		);
+	}
+
+	if (!parseResult.calendar?.events?.[0]) {
+		throw new NodeOperationError(
+			this.getNode(),
+			`Event not found in calendar "${calendar!.displayName}" by "${needleEventUrl}" url`,
+		);
+	}
+
+	return [createEventExecutionData(calendarObject, parseResult.calendar.events[0])];
 }
