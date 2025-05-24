@@ -37,7 +37,7 @@ export function createEventExecutionData(
 		json: {
 			...transformedEvent,
 			_handle: {
-				calendarUrl: calendarObject.url,
+				url: calendarObject.url,
 				etag: calendarObject.etag as string
 			}
 		}
