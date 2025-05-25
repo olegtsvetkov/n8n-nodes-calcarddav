@@ -11,16 +11,6 @@ import { FormatDatetime } from "../../../methods";
 
 type EventStatus = 'TENTATIVE' | 'CONFIRMED' | 'CANCELLED';
 
-// Function to format multiline text into iCalendar format
-function formatMultilineText(text: string): string {
-	if (!text) return '';
-	return text
-		.replace(/\\/g, '\\\\')
-		.replace(/,/g, '\\,')
-		.replace(/;/g, '\\;')
-		.replace(/\n/g, '\\n');
-}
-
 export async function createEvent(this: IExecuteFunctions, index: number): Promise<INodeExecutionData[]> {
 	const eventTitle = this.getNodeParameter('event_title', index) as string;
 	const eventDescription = this.getNodeParameter('event_description', index) as string;
@@ -57,7 +47,7 @@ export async function createEvent(this: IExecuteFunctions, index: number): Promi
 	const baseEvent: Partial<IcsEvent> = {
 		uid: uuidv4(),
 		summary: eventTitle,
-		description: formatMultilineText(eventDescription),
+		description: eventDescription,
 		status: eventStatus || 'CONFIRMED',
 		stamp: {
 			date: new Date(),
