@@ -56,8 +56,8 @@
   },
   "dependencies": {
     "@ts-ics/schema-zod": "^2.0.0",
-    "ts-ics": "^2.0.1",
-    "tsdav": "^2.1.2",
+    "ts-ics": "^2.1.0",
+    "tsdav": "^2.1.4",
     "uuid": "^11.0.3",
     "vcf": "^2.1.2"
   },
