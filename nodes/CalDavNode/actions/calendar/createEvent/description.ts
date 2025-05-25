@@ -115,44 +115,6 @@ export const description: CalendarProperties = [
 		description: 'URL associated with the event',
 	},
 	{
-		displayName: 'Categories',
-		name: 'event_categories',
-		type: 'string',
-		default: '',
-		displayOptions: {
-			show: {
-				operation: ['createEvent'],
-			},
-		},
-		description: 'Event categories (comma-separated)',
-	},
-	{
-		displayName: 'Priority',
-		name: 'event_priority',
-		type: 'options',
-		options: [
-			{
-				name: 'Low',
-				value: '0',
-			},
-			{
-				name: 'Medium',
-				value: '5',
-			},
-			{
-				name: 'High',
-				value: '9',
-			},
-		],
-		default: '5',
-		displayOptions: {
-			show: {
-				operation: ['createEvent'],
-			},
-		},
-		description: 'Event priority',
-	},
-	{
 		displayName: 'Status',
 		name: 'event_status',
 		type: 'options',
@@ -368,17 +330,5 @@ export const description: CalendarProperties = [
 			},
 		],
 		description: 'Event reminders',
-	},
-	{
-		displayName: 'Color',
-		name: 'event_color',
-		type: 'color',
-		default: '',
-		displayOptions: {
-			show: {
-				operation: ['createEvent'],
-			},
-		},
-		description: 'Event color in HEX format',
 	},
 ]

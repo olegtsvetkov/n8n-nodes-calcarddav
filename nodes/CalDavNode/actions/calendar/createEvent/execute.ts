@@ -20,7 +20,6 @@ export async function createEvent(this: IExecuteFunctions, index: number): Promi
 	const eventIsAllDay = this.getNodeParameter('event_is_all_day', index) as string;
 	const eventLocation = this.getNodeParameter('event_location', index) as string;
 	const eventUrl = this.getNodeParameter('event_url', index) as string;
-	const eventCategories = this.getNodeParameter('event_categories', index) as string;
 	const eventStatus = this.getNodeParameter('event_status', index) as EventStatus;
 	const eventTimeTransparency = this.getNodeParameter('event_time_transparency', index) as IcsTimeTransparentType;
 	const eventAlarms = this.getNodeParameter('event_alarms', index) as {
@@ -66,11 +65,6 @@ export async function createEvent(this: IExecuteFunctions, index: number): Promi
 		location: eventLocation,
 		url: eventUrl,
 	};
-
-	// Add categories if provided
-	if (eventCategories) {
-		baseEvent.categories = eventCategories.split(',').map(cat => cat.trim());
-	}
 
 	// Add attendees if provided
 	if (eventAttendees?.attendee?.length) {
