@@ -5,7 +5,9 @@ import {
 	type IcsEvent, 
 	type IcsCalendar, 
 	generateIcsCalendar,
-	IcsTimeTransparentType
+	IcsTimeTransparentType,
+	IcsAlarm,
+	IcsDuration
 } from "ts-ics";
 import { v4 as uuidv4 } from 'uuid';
 import { FormatDatetime } from "../../../methods";
@@ -21,6 +23,12 @@ export async function createEvent(this: IExecuteFunctions, index: number): Promi
 	const eventCategories = this.getNodeParameter('event_categories', index) as string;
 	const eventStatus = this.getNodeParameter('event_status', index) as EventStatus;
 	const eventTimeTransparency = this.getNodeParameter('event_time_transparency', index) as IcsTimeTransparentType;
+	const eventAlarms = this.getNodeParameter('event_alarms', index) as {
+		alarm?: Array<{
+			trigger: 'minutes_before' | 'hours_before' | 'days_before' | 'minutes_after' | 'hours_after' | 'days_after';
+			time_unit: number;
+		}>;
+	};
 	const eventAttendees = this.getNodeParameter('event_attendees', index) as {
 		attendee: Array<{
 			email: string;
@@ -71,6 +79,34 @@ export async function createEvent(this: IExecuteFunctions, index: number): Promi
 			name: attendee.name,
 			rsvp: attendee.rsvp,
 		}));
+	}
+
+	// Add alarms if provided
+	if (eventAlarms?.alarm?.length) {
+		baseEvent.alarms = eventAlarms.alarm.map(alarm => {
+			const [unit, direction] = alarm.trigger.split('_') as [string, 'before' | 'after'];
+			
+			const trigger = direction === 'before' ? -alarm.time_unit : alarm.time_unit;
+
+			const duration: IcsDuration = {};
+
+			if (unit === 'minutes') {
+				duration.minutes = trigger;
+			} else if (unit === 'hours') {
+				duration.hours = trigger;
+			} else if (unit === 'days') {
+				duration.days = trigger;
+			}
+
+			return {
+				action: 'DISPLAY',
+				trigger: {
+					type: 'relative',
+					value: duration,
+				},
+				description: eventTitle,
+			} as IcsAlarm;
+		});
 	}
 
 	let event: IcsEvent;

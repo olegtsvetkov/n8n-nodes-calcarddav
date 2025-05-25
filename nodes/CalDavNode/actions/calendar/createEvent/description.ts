@@ -331,42 +331,38 @@ export const description: CalendarProperties = [
 						type: 'options',
 						options: [
 							{
-								name: 'Before Start',
-								value: 'before',
+								name: 'Minutes Before',
+								value: 'minutes_before',
 							},
 							{
-								name: 'At Start',
-								value: 'start',
+								name: 'Hours Before',
+								value: 'hours_before',
 							},
 							{
-								name: 'After Start',
-								value: 'after',
+								name: 'Days Before',
+								value: 'days_before',
+							},
+							{
+								name: 'Minutes After',
+								value: 'minutes_after',
+							},
+							{
+								name: 'Hours After',
+								value: 'hours_after',
+							},
+							{
+								name: 'Days After',
+								value: 'days_after',
 							},
 						],
-						default: 'before',
+						default: 'minutes_before',
 					},
 					{
-						displayName: 'Duration',
-						name: 'duration',
+						displayName: 'Time Unit',
+						name: 'time_unit',
 						type: 'number',
 						default: 15,
-						description: 'Time in minutes',
-					},
-					{
-						displayName: 'Action',
-						name: 'action',
-						type: 'options',
-						options: [
-							{
-								name: 'Display',
-								value: 'DISPLAY',
-							},
-							{
-								name: 'Email',
-								value: 'EMAIL',
-							},
-						],
-						default: 'DISPLAY',
+						description: 'Number of time units before/after the event',
 					},
 				],
 			},
