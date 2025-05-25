@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@ts-ics/schema-zod':
-        specifier: ^2.0.0
-        version: 2.0.0
+        specifier: ^2.1.0
+        version: 2.1.0
       ts-ics:
         specifier: ^2.1.0
         version: 2.1.0
@@ -690,8 +690,8 @@ packages:
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
     engines: {node: '>= 10'}
 
-  '@ts-ics/schema-zod@2.0.0':
-    resolution: {integrity: sha512-pm44Buz2N3EEuQNBzYFYhrscos3K2M6L/aoN3YWWhrO5uoq6RgOTP0BollIBpir6Z3oKW7D97kAzr64/4wi1Rw==}
+  '@ts-ics/schema-zod@2.1.0':
+    resolution: {integrity: sha512-ScjcKxjSG5TBFNPGm0B0hqWjNvq4MTQRR5ateTutOkNop7//Gkg975wE8ofoHtSzzzLvrYioyr2idCZi+41WGw==}
 
   '@types/asn1@0.2.4':
     resolution: {integrity: sha512-V91DSJ2l0h0gRhVP4oBfBzRBN9lAbPUkGDMCnwedqPKX2d84aAMc9CulOvxdw1f7DfEYx99afab+Rsm3e52jhA==}
@@ -5465,7 +5465,7 @@ snapshots:
 
   '@tootallnate/once@2.0.0': {}
 
-  '@ts-ics/schema-zod@2.0.0':
+  '@ts-ics/schema-zod@2.1.0':
     dependencies:
       ts-ics: 2.1.0
       zod: 3.24.1
