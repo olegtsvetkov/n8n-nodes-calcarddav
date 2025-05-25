@@ -4,7 +4,8 @@ import {DAVCalendar} from "tsdav";
 import { 
 	type IcsEvent, 
 	type IcsCalendar, 
-	generateIcsCalendar
+	generateIcsCalendar,
+	IcsTimeTransparentType
 } from "ts-ics";
 import { v4 as uuidv4 } from 'uuid';
 import { FormatDatetime } from "../../../methods";
@@ -19,6 +20,7 @@ export async function createEvent(this: IExecuteFunctions, index: number): Promi
 	const eventUrl = this.getNodeParameter('event_url', index) as string;
 	const eventCategories = this.getNodeParameter('event_categories', index) as string;
 	const eventStatus = this.getNodeParameter('event_status', index) as EventStatus;
+	const eventTimeTransparency = this.getNodeParameter('event_time_transparency', index) as IcsTimeTransparentType;
 	const eventAttendees = this.getNodeParameter('event_attendees', index) as {
 		attendee: Array<{
 			email: string;
@@ -49,6 +51,7 @@ export async function createEvent(this: IExecuteFunctions, index: number): Promi
 		summary: eventTitle,
 		description: eventDescription,
 		status: eventStatus || 'CONFIRMED',
+		timeTransparent: eventTimeTransparency || 'OPAQUE',
 		stamp: {
 			date: new Date(),
 		},
