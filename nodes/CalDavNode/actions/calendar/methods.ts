@@ -29,18 +29,25 @@ export function transformEventDates(event: Record<string, any>): Record<string, 
 
 export function createEventExecutionData(
 	calendarObject: DAVCalendarObject,
-	event: Record<string, any>
+	event: Record<string, any>,
+	showRawIcs: boolean = false
 ): INodeExecutionData {
 	const transformedEvent = transformEventDates(event);
 
-	return {
-		json: {
-			...transformedEvent,
-			_handle: {
-				url: calendarObject.url,
-				etag: calendarObject.etag as string
-			}
+	const jsonData: Record<string, any> = {
+		...transformedEvent,
+		_handle: {
+			url: calendarObject.url,
+			etag: calendarObject.etag as string
 		}
+	};
+
+	if (showRawIcs) {
+		jsonData._ics = calendarObject.data as string;
+	}
+
+	return {
+		json: jsonData
 	};
 }
 

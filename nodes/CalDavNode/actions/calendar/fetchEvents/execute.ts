@@ -11,6 +11,7 @@ export async function fetchObjects(this: IExecuteFunctions, index: number): Prom
 	const startDateLeftString = this.getNodeParameter('start_date_left', index) as string;
 	const startDateRightString = this.getNodeParameter('start_date_right', index) as string;
 	const expandRecurring = this.getNodeParameter('expand_recurring', index) as boolean;
+	const showRawIcs = this.getNodeParameter('showRawIcs', index) as boolean;
 
 	// parse string to date in utc
 	const leftDate = new Date(FormatDatetime(startDateLeftString));
@@ -37,8 +38,7 @@ export async function fetchObjects(this: IExecuteFunctions, index: number): Prom
 	// Parse to events
 	for (const calendarObject of response) {
 		const parsed = parseIcsEvent(calendarObject.data as string);
-
-		returnData.push(createEventExecutionData(calendarObject, parsed));
+		returnData.push(createEventExecutionData(calendarObject, parsed, showRawIcs));
 	}
 
 	return returnData;

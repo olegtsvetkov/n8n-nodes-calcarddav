@@ -57,5 +57,18 @@ export const description: CalendarProperties = [
 			},
 		},
 		description: 'Whether to expand recurring events into individual instances',
+	},
+	{
+		displayName: 'Show Raw ICS Data',
+		name: 'showRawIcs',
+		type: 'boolean',
+		default: false,
+		required: false,
+		displayOptions: {
+			show: {
+				operation: ['fetchEvents'],
+			},
+		},
+		description: 'Whether to include raw ICS data in the output',
 	}
 ]

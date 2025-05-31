@@ -7,6 +7,7 @@ export async function fetchObject(this: IExecuteFunctions, index: number): Promi
 	const client = await createClient(this, 'caldav');
 	const calendarObjectUrl = this.getNodeParameter('calendar', index);
 	const needleEventUrl = this.getNodeParameter('url', index) as string;
+	const showRawIcs = this.getNodeParameter('showRawIcs', index) as boolean;
 
 	// Retrieve calendars
 	const calendars: DAVCalendar[] = await client.fetchCalendars();
@@ -44,5 +45,5 @@ export async function fetchObject(this: IExecuteFunctions, index: number): Promi
 		);
 	}
 
-	return [createEventExecutionData(calendarObject, parseResult.calendar.events[0])];
+	return [createEventExecutionData(calendarObject, parseResult.calendar.events[0], showRawIcs)];
 }
