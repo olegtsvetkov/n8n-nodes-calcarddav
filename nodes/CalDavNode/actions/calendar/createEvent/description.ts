@@ -210,4 +210,32 @@ export const description: CalendarProperties = [
 		],
 		description: 'Configure one or more reminders for the event. These will trigger notifications at specified times before or after the event. You can add multiple reminders with different timing settings.',
 	},
+	{
+		displayName: 'Additional Options',
+		name: 'options',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: {
+			show: {
+				operation: ['createEvent'],
+			},
+		},
+		options: [
+			{
+				displayName: 'Include Server Response',
+				name: 'includeResponse',
+				type: 'boolean',
+				default: false,
+				description: 'When enabled, the node will include the complete server response in the output. This can be useful for debugging or when you need to verify the creation status.',
+			},
+			{
+				displayName: 'Include Raw Calendar Data',
+				name: 'showRawIcs',
+				type: 'boolean',
+				default: false,
+				description: 'When enabled, the node will include the raw iCalendar (ICS) data in the output. This contains the complete calendar data in the standard iCalendar format, which can be useful for debugging or when you need to verify the exact calendar data being sent.',
+			},
+		],
+	},
 ]

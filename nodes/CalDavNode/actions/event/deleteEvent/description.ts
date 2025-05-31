@@ -29,4 +29,26 @@ export const description: EventProperties = [
 			},
 		},
 	},
+	{
+		displayName: 'Additional Options',
+		name: 'options',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['event'],
+				operation: ['deleteEvent'],
+			},
+		},
+		options: [
+			{
+				displayName: 'Include Server Response',
+				name: 'includeResponse',
+				type: 'boolean',
+				default: false,
+				description: 'When enabled, the node will include the complete server response in the output. This can be useful for debugging or when you need to verify the deletion status.',
+			},
+		],
+	},
 ]

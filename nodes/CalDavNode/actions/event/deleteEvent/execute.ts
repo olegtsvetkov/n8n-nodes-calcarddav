@@ -4,10 +4,13 @@ import {createClient} from "../../../../../transport/davClient";
 export async function deleteEvent(this: IExecuteFunctions, index: number): Promise<INodeExecutionData[]> {
 	const eventUrl = this.getNodeParameter('event_url', index) as string;
 	const eventEtag = this.getNodeParameter('event_etag', index) as string;
+	const options = this.getNodeParameter('options', index, {}) as {
+		includeResponse?: boolean;
+	};
 
 	const client = await createClient(this, 'caldav');
 
-	// Perform event creation oon remote server
+	// Perform event deletion on remote server
 	const result = await client.deleteCalendarObject({
 		calendarObject: {
 			url: eventUrl,
@@ -22,8 +25,11 @@ export async function deleteEvent(this: IExecuteFunctions, index: number): Promi
 		);
 	}
 
-	return this.helpers.returnJsonArray({
+	// Prepare the response based on the includeResponse option
+	const response = {
 		ok: true,
-		result: result,
-	});
+		...(options.includeResponse ? { result } : {}),
+	};
+
+	return this.helpers.returnJsonArray(response);
 }

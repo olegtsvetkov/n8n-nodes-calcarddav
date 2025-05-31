@@ -26,6 +26,10 @@ export async function createEvent(this: IExecuteFunctions, index: number): Promi
 			time_unit: number;
 		}>;
 	};
+	const options = this.getNodeParameter('options', index, {}) as {
+		includeResponse?: boolean;
+		showRawIcs?: boolean;
+	};
 
 	const client = await createClient(this, 'caldav');
 	const calendarObjectUrl = this.getNodeParameter('calendar', index);
@@ -134,8 +138,12 @@ export async function createEvent(this: IExecuteFunctions, index: number): Promi
 		);
 	}
 
-	return this.helpers.returnJsonArray({
+	// Prepare the response based on the options
+	const response = {
 		ok: true,
-		result: result,
-	});
+		...(options.showRawIcs ? { ics: iCalString } : {}),
+		...(options.includeResponse ? { result } : {}),
+	};
+
+	return this.helpers.returnJsonArray(response);
 }
