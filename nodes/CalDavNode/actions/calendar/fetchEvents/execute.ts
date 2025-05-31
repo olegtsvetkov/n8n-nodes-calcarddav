@@ -2,7 +2,8 @@ import {IExecuteFunctions, INodeExecutionData} from "n8n-workflow";
 import {createClient} from "../../../../../transport/davClient";
 import {DAVCalendar} from "tsdav";
 import { FormatDatetime } from "../../../methods";
-import { createEventExecutionData, parseCalendarObject } from "../methods";
+import { createEventExecutionData } from "../methods";
+import { parseIcsEvent } from "@ts-ics/schema-zod";
 
 export async function fetchObjects(this: IExecuteFunctions, index: number): Promise<INodeExecutionData[]> {
 	const client = await createClient(this, 'caldav');
@@ -26,29 +27,17 @@ export async function fetchObjects(this: IExecuteFunctions, index: number): Prom
 		timeRange: {
 			start: leftDate.toISOString(),
 			end: rightDate.toISOString()
-		}
+		},
+		expand: true,
 	});
 
 	const returnData: INodeExecutionData[] = [];
 
 	// Parse to events
 	for (const calendarObject of response) {
-		const parseResult = parseCalendarObject(calendarObject);
+		const parsed = parseIcsEvent(calendarObject.data as string);
 
-		if (!parseResult.success) {
-			this.logger.warn(`Failed to parse calendar object: ${parseResult.error}`);
-			continue;
-		}
-
-		if (!parseResult.calendar?.events) {
-			continue;
-		}
-
-		const transformedEvents = parseResult.calendar.events.map(event => 
-			createEventExecutionData(calendarObject, event)
-		);
-
-		returnData.push(...transformedEvents);
+		returnData.push(createEventExecutionData(calendarObject, parsed));
 	}
 
 	return returnData;
