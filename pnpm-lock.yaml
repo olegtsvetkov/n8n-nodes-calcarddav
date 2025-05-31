@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@ts-ics/schema-zod':
-        specifier: ^2.1.0
-        version: 2.1.0
+        specifier: ^2.1.3
+        version: 2.1.3
       ts-ics:
-        specifier: ^2.1.0
-        version: 2.1.0
+        specifier: ^2.1.3
+        version: 2.1.3
       tsdav:
         specifier: ^2.1.4
         version: 2.1.4
@@ -690,8 +690,8 @@ packages:
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
     engines: {node: '>= 10'}
 
-  '@ts-ics/schema-zod@2.1.0':
-    resolution: {integrity: sha512-ScjcKxjSG5TBFNPGm0B0hqWjNvq4MTQRR5ateTutOkNop7//Gkg975wE8ofoHtSzzzLvrYioyr2idCZi+41WGw==}
+  '@ts-ics/schema-zod@2.1.3':
+    resolution: {integrity: sha512-UuswroTPjeWDqaI7faWLRalPvyz9f993vqylRp3Z1MjmyEQAKxXjEwHszLg5VfrrKjhGS/jxegfpD/9N21hSOQ==}
 
   '@types/asn1@0.2.4':
     resolution: {integrity: sha512-V91DSJ2l0h0gRhVP4oBfBzRBN9lAbPUkGDMCnwedqPKX2d84aAMc9CulOvxdw1f7DfEYx99afab+Rsm3e52jhA==}
@@ -3871,8 +3871,8 @@ packages:
     peerDependencies:
       typescript: '>=4.2.0'
 
-  ts-ics@2.1.0:
-    resolution: {integrity: sha512-5fWop9ChEsGlqfejRhbpbKxZzrT/oHihV1VHjG3jPX1G7JD+Uan/wPuUgSw0Sp0Yo95Tc5u/y0GME8/YDXej2w==}
+  ts-ics@2.1.3:
+    resolution: {integrity: sha512-jW+ewlQZ1bDCWDR6XhIgpAPavsA6Wgp2D+hufEGRW+LnXXU9xFpRXWBu8fioZRG6bh0TA5soZEfheC/1uO7jlA==}
 
   tsdav@2.1.4:
     resolution: {integrity: sha512-yNF2VHw2neaRbbpSioOqa26i81RT8x2AghLWUgS4bUY47Nb8zlOGV8bDuXULb2NRx+LFU+Z6JgkuMn48fRjQjw==}
@@ -5470,9 +5470,9 @@ snapshots:
 
   '@tootallnate/once@2.0.0': {}
 
-  '@ts-ics/schema-zod@2.1.0':
+  '@ts-ics/schema-zod@2.1.3':
     dependencies:
-      ts-ics: 2.1.0
+      ts-ics: 2.1.3
       zod: 3.24.1
 
   '@types/asn1@0.2.4':
@@ -9061,7 +9061,7 @@ snapshots:
       jsonwebtoken: 9.0.2
       mime-types: 2.1.35
       mkdirp: 1.0.4
-      moment: 2.29.4
+      moment: 2.30.1
       moment-timezone: 0.5.48
       open: 7.4.2
       python-struct: 1.1.3
@@ -9367,7 +9367,7 @@ snapshots:
     dependencies:
       typescript: 5.8.2
 
-  ts-ics@2.1.0:
+  ts-ics@2.1.3:
     dependencies:
       '@standard-schema/spec': 1.0.0
 
