@@ -55,8 +55,8 @@
     "typescript": "^5.5.3"
   },
   "dependencies": {
-    "@ts-ics/schema-zod": "^2.1.0",
-    "ts-ics": "^2.1.0",
+    "@ts-ics/schema-zod": "^2.1.3",
+    "ts-ics": "^2.1.3",
     "tsdav": "^2.1.4",
     "uuid": "^11.0.3",
     "vcf": "^2.1.2"
