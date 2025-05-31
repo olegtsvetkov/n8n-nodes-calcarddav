@@ -142,28 +142,6 @@ export const description: CalendarProperties = [
 		description: 'Event status',
 	},
 	{
-		displayName: 'Time Transparency',
-		name: 'event_time_transparency',
-		type: 'options',
-		options: [
-			{
-				name: 'Busy',
-				value: 'OPAQUE',
-			},
-			{
-				name: 'Free',
-				value: 'TRANSPARENT',
-			},
-		],
-		default: 'OPAQUE',
-		displayOptions: {
-			show: {
-				operation: ['createEvent'],
-			},
-		},
-		description: 'Shows whether the time slot is marked as busy or free in the calendar',
-	},
-	{
 		displayName: 'Attendees',
 		name: 'event_attendees',
 		type: 'fixedCollection',

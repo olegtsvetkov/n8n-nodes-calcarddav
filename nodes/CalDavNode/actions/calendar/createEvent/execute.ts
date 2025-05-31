@@ -5,7 +5,6 @@ import {
 	type IcsEvent, 
 	type IcsCalendar, 
 	generateIcsCalendar,
-	IcsTimeTransparentType,
 	IcsAlarm,
 	IcsDuration
 } from "ts-ics";
@@ -21,7 +20,6 @@ export async function createEvent(this: IExecuteFunctions, index: number): Promi
 	const eventLocation = this.getNodeParameter('event_location', index) as string;
 	const eventUrl = this.getNodeParameter('event_url', index) as string;
 	const eventStatus = this.getNodeParameter('event_status', index) as EventStatus;
-	const eventTimeTransparency = this.getNodeParameter('event_time_transparency', index) as IcsTimeTransparentType;
 	const eventAlarms = this.getNodeParameter('event_alarms', index) as {
 		alarm?: Array<{
 			trigger: 'minutes_before' | 'hours_before' | 'days_before' | 'minutes_after' | 'hours_after' | 'days_after';
@@ -58,7 +56,6 @@ export async function createEvent(this: IExecuteFunctions, index: number): Promi
 		summary: eventTitle,
 		description: eventDescription,
 		status: eventStatus || 'CONFIRMED',
-		timeTransparent: eventTimeTransparency || 'OPAQUE',
 		stamp: {
 			date: new Date(),
 		},
