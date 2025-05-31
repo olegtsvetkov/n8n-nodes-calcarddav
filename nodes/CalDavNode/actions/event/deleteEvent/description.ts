@@ -1,5 +1,6 @@
 import {EventProperties} from "../../Interface";
 
+// todo: don't fail option when Not found
 export const description: EventProperties = [
 	{
 		displayName: 'Event URL or ID',
