@@ -6,7 +6,7 @@ import {CalendarProperties} from "../../Interface";
 // todo: add recurrence
 export const description: CalendarProperties = [
 	{
-		displayName: 'Select Calendar or Set URL Name or ID',
+		displayName: 'Calendar Selection',
 		name: 'calendar',
 		type: 'options',
 		typeOptions: {
@@ -21,10 +21,10 @@ export const description: CalendarProperties = [
 				operation: ['createEvent']
 			}
 		},
-		description: 'Calendar to work with. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+		description: 'Select a calendar from your connected account or specify a calendar URL/ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>. This determines where the event will be created.',
 	},
 	{
-		displayName: 'Title',
+		displayName: 'Event Title',
 		name: 'event_title',
 		type: 'string',
 		default: '',
@@ -34,9 +34,10 @@ export const description: CalendarProperties = [
 				operation: ['createEvent'],
 			},
 		},
+		description: 'The main title or name of the calendar event. This will be displayed prominently in calendar views.',
 	},
 	{
-		displayName: 'All Day Event',
+		displayName: 'Is This an All-Day Event?',
 		name: 'event_is_all_day',
 		type: 'options',
 		options: [
@@ -56,9 +57,10 @@ export const description: CalendarProperties = [
 				operation: ['createEvent'],
 			},
 		},
+		description: 'Set to "Yes" if the event spans the entire day(s) without specific start/end times. When enabled, the event will be displayed as a full-day event in calendar views.',
 	},
 	{
-		displayName: 'Event Start At',
+		displayName: 'Event Start Date & Time',
 		name: 'event_start_date',
 		type: 'dateTime',
 		default: '',
@@ -68,10 +70,10 @@ export const description: CalendarProperties = [
 				operation: ['createEvent'],
 			},
 		},
-		description: 'Specific date and time in RFC3339 format in UTC'
+		description: 'The date and time when the event begins. Must be in RFC3339 format (e.g., "2024-03-20T15:00:00Z"). All times are stored in UTC.',
 	},
 	{
-		displayName: 'Event Ends At',
+		displayName: 'Event End Date & Time',
 		name: 'event_end_date',
 		type: 'dateTime',
 		default: '',
@@ -81,10 +83,10 @@ export const description: CalendarProperties = [
 				operation: ['createEvent'],
 			},
 		},
-		description: 'Specific date and time in RFC3339 format in UTC',
+		description: 'The date and time when the event concludes. Must be in RFC3339 format (e.g., "2024-03-20T16:00:00Z"). All times are stored in UTC. Must be after the start time.',
 	},
 	{
-		displayName: 'Description',
+		displayName: 'Event Description (Optional)',
 		name: 'event_description',
 		type: 'string',
 		default: '',
@@ -93,9 +95,10 @@ export const description: CalendarProperties = [
 				operation: ['createEvent'],
 			},
 		},
+		description: 'Detailed information about the event. Can include agenda, meeting notes, or any additional context that attendees should know.',
 	},
 	{
-		displayName: 'Location',
+		displayName: 'Event Location (Optional)',
 		name: 'event_location',
 		type: 'string',
 		default: '',
@@ -104,10 +107,10 @@ export const description: CalendarProperties = [
 				operation: ['createEvent'],
 			},
 		},
-		description: 'Location of the event',
+		description: 'The physical or virtual location where the event takes place. Can be an address, room number, or virtual meeting link (e.g., Zoom URL).',
 	},
 	{
-		displayName: 'URL',
+		displayName: 'Event Website URL (Optional)',
 		name: 'event_url',
 		type: 'string',
 		default: '',
@@ -116,10 +119,10 @@ export const description: CalendarProperties = [
 				operation: ['createEvent'],
 			},
 		},
-		description: 'URL associated with the event',
+		description: 'A web link associated with the event. This could be a meeting platform link, event website, or any relevant online resource.',
 	},
 	{
-		displayName: 'Status',
+		displayName: 'Event Status (Confirmed/Tentative/Cancelled)',
 		name: 'event_status',
 		type: 'options',
 		options: [
@@ -142,10 +145,10 @@ export const description: CalendarProperties = [
 				operation: ['createEvent'],
 			},
 		},
-		description: 'Event status',
+		description: 'The current state of the event. "Confirmed" means the event is definitely happening, "Tentative" indicates it might change, and "Cancelled" means it will not take place.',
 	},
 	{
-		displayName: 'Alarms',
+		displayName: 'Event Reminders & Notifications',
 		name: 'event_alarms',
 		type: 'fixedCollection',
 		typeOptions: {
@@ -159,11 +162,11 @@ export const description: CalendarProperties = [
 		},
 		options: [
 			{
-				displayName: 'Alarm',
+				displayName: 'Reminder Settings',
 				name: 'alarm',
 				values: [
 					{
-						displayName: 'Trigger',
+						displayName: 'When to Trigger Reminder',
 						name: 'trigger',
 						type: 'options',
 						options: [
@@ -193,17 +196,18 @@ export const description: CalendarProperties = [
 							},
 						],
 						default: 'minutes_before',
+						description: 'When the reminder should be triggered relative to the event time.',
 					},
 					{
-						displayName: 'Time Unit',
+						displayName: 'Number of Time Units',
 						name: 'time_unit',
 						type: 'number',
 						default: 15,
-						description: 'Number of time units before/after the event',
+						description: 'The number of time units (minutes/hours/days) before or after the event when the reminder should be triggered. For example, setting this to 15 with "Minutes Before" will create a reminder 15 minutes before the event starts.',
 					},
 				],
 			},
 		],
-		description: 'Event reminders',
+		description: 'Configure one or more reminders for the event. These will trigger notifications at specified times before or after the event. You can add multiple reminders with different timing settings.',
 	},
 ]

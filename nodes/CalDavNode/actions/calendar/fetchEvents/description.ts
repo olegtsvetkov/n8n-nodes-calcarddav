@@ -2,7 +2,7 @@ import {CalendarProperties} from "../../Interface";
 
 export const description: CalendarProperties = [
 	{
-		displayName: 'Select Calendar or Set URL Name or ID',
+		displayName: 'Calendar Selection',
 		name: 'calendar',
 		type: 'options',
 		typeOptions: {
@@ -17,10 +17,10 @@ export const description: CalendarProperties = [
 				operation: ['fetchEvents']
 			}
 		},
-		description: 'Calendar to work with. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+		description: 'Select a calendar from your connected account or specify a calendar URL/ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>. This determines which calendar\'s events will be retrieved.',
 	},
 	{
-		displayName: 'Event Starts On or After',
+		displayName: 'Search Events From (Start Date)',
 		name: 'start_date_left',
 		type: 'dateTime',
 		default: '',
@@ -30,10 +30,10 @@ export const description: CalendarProperties = [
 				operation: ['fetchEvents'],
 			},
 		},
-		description: 'Specific date and time in RFC3339 format in UTC',
+		description: 'The start of the time range to search for events. Must be in RFC3339 format (e.g., "2024-03-20T00:00:00Z"). All times are stored in UTC. Events starting at or after this time will be included.',
 	},
 	{
-		displayName: 'Event Starts Before',
+		displayName: 'Search Events Until (End Date)',
 		name: 'start_date_right',
 		type: 'dateTime',
 		default: '',
@@ -43,10 +43,10 @@ export const description: CalendarProperties = [
 				operation: ['fetchEvents'],
 			},
 		},
-		description: 'Specific date and time in RFC3339 format in UTC',
+		description: 'The end of the time range to search for events. Must be in RFC3339 format (e.g., "2024-03-27T23:59:59Z"). All times are stored in UTC. Only events starting before this time will be included.',
 	},
 	{
-		displayName: 'Options',
+		displayName: 'Additional Options',
 		name: 'options',
 		type: 'collection',
 		placeholder: 'Add Option',
@@ -58,18 +58,18 @@ export const description: CalendarProperties = [
 		},
 		options: [
 			{
-				displayName: 'Expand Recurring Events',
+				displayName: 'Show Individual Recurring Events',
 				name: 'expand_recurring',
 				type: 'boolean',
 				default: true,
-				description: 'Whether to expand recurring events into individual instances',
+				description: 'When enabled, recurring events (like weekly meetings) will be expanded into individual instances within the specified time range. When disabled, only the recurring event definition will be returned.',
 			},
 			{
-				displayName: 'Show Raw ICS Data',
+				displayName: 'Include Raw Calendar Data',
 				name: 'showRawIcs',
 				type: 'boolean',
 				default: false,
-				description: 'Whether to include raw ICS data in the output',
+				description: 'Include the raw iCalendar (ICS) data in the output. This contains all the technical details of the event in the standard calendar format. Useful for debugging or advanced calendar integrations.',
 			},
 		],
 	},
