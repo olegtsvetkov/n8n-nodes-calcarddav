@@ -10,6 +10,7 @@ export async function fetchObjects(this: IExecuteFunctions, index: number): Prom
 	const calendarObjectUrl = this.getNodeParameter('calendar', index);
 	const startDateLeftString = this.getNodeParameter('start_date_left', index) as string;
 	const startDateRightString = this.getNodeParameter('start_date_right', index) as string;
+	const expandRecurring = this.getNodeParameter('expand_recurring', index) as boolean;
 
 	// parse string to date in utc
 	const leftDate = new Date(FormatDatetime(startDateLeftString));
@@ -28,7 +29,7 @@ export async function fetchObjects(this: IExecuteFunctions, index: number): Prom
 			start: leftDate.toISOString(),
 			end: rightDate.toISOString()
 		},
-		expand: true,
+		expand: expandRecurring,
 	});
 
 	const returnData: INodeExecutionData[] = [];

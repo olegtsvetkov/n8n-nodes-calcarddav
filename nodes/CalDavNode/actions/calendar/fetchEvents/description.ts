@@ -44,5 +44,18 @@ export const description: CalendarProperties = [
 			},
 		},
 		description: 'Specific date and time in RFC3339 format in UTC',
+	},
+	{
+		displayName: 'Expand Recurring Events',
+		name: 'expand_recurring',
+		type: 'boolean',
+		default: true,
+		required: false,
+		displayOptions: {
+			show: {
+				operation: ['fetchEvents'],
+			},
+		},
+		description: 'Whether to expand recurring events into individual instances',
 	}
 ]
