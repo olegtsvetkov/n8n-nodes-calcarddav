@@ -1,6 +1,9 @@
 import {CalendarProperties} from "../../Interface";
 
 // todo: add provider specific properties (Outlook Categories, Apple Calendar Color, Google Calendar Color)
+// todo: add attendees
+// todo: add time transparency
+// todo: add recurrence
 export const description: CalendarProperties = [
 	{
 		displayName: 'Select Calendar or Set URL Name or ID',
