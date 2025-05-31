@@ -142,48 +142,6 @@ export const description: CalendarProperties = [
 		description: 'Event status',
 	},
 	{
-		displayName: 'Attendees',
-		name: 'event_attendees',
-		type: 'fixedCollection',
-		typeOptions: {
-			multipleValues: true,
-		},
-		default: {},
-		displayOptions: {
-			show: {
-				operation: ['createEvent'],
-			},
-		},
-		options: [
-			{
-				displayName: 'Attendee',
-				name: 'attendee',
-				values: [
-					{
-						displayName: 'Email',
-						name: 'email',
-						type: 'string',
-						default: '',
-						required: true,
-					},
-					{
-						displayName: 'Name',
-						name: 'name',
-						type: 'string',
-						default: '',
-					},
-					{
-						displayName: 'RSVP',
-						name: 'rsvp',
-						type: 'boolean',
-						default: false,
-					},
-				],
-			},
-		],
-		description: 'Event attendees',
-	},
-	{
 		displayName: 'Recurrence',
 		name: 'event_recurrence',
 		type: 'fixedCollection',

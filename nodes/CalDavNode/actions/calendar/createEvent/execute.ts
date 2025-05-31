@@ -26,13 +26,6 @@ export async function createEvent(this: IExecuteFunctions, index: number): Promi
 			time_unit: number;
 		}>;
 	};
-	const eventAttendees = this.getNodeParameter('event_attendees', index) as {
-		attendee: Array<{
-			email: string;
-			name?: string;
-			rsvp?: boolean;
-		}>;
-	};
 
 	const client = await createClient(this, 'caldav');
 	const calendarObjectUrl = this.getNodeParameter('calendar', index);
@@ -62,15 +55,6 @@ export async function createEvent(this: IExecuteFunctions, index: number): Promi
 		location: eventLocation,
 		url: eventUrl,
 	};
-
-	// Add attendees if provided
-	if (eventAttendees?.attendee?.length) {
-		baseEvent.attendees = eventAttendees.attendee.map(attendee => ({
-			email: attendee.email,
-			name: attendee.name,
-			rsvp: attendee.rsvp,
-		}));
-	}
 
 	// Add alarms if provided
 	if (eventAlarms?.alarm?.length) {
