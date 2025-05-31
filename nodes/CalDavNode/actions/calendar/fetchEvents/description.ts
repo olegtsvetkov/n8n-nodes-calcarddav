@@ -46,29 +46,31 @@ export const description: CalendarProperties = [
 		description: 'Specific date and time in RFC3339 format in UTC',
 	},
 	{
-		displayName: 'Expand Recurring Events',
-		name: 'expand_recurring',
-		type: 'boolean',
-		default: true,
-		required: false,
+		displayName: 'Options',
+		name: 'options',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
 		displayOptions: {
 			show: {
 				operation: ['fetchEvents'],
 			},
 		},
-		description: 'Whether to expand recurring events into individual instances',
+		options: [
+			{
+				displayName: 'Expand Recurring Events',
+				name: 'expand_recurring',
+				type: 'boolean',
+				default: true,
+				description: 'Whether to expand recurring events into individual instances',
+			},
+			{
+				displayName: 'Show Raw ICS Data',
+				name: 'showRawIcs',
+				type: 'boolean',
+				default: false,
+				description: 'Whether to include raw ICS data in the output',
+			},
+		],
 	},
-	{
-		displayName: 'Show Raw ICS Data',
-		name: 'showRawIcs',
-		type: 'boolean',
-		default: false,
-		required: false,
-		displayOptions: {
-			show: {
-				operation: ['fetchEvents'],
-			},
-		},
-		description: 'Whether to include raw ICS data in the output',
-	}
 ]

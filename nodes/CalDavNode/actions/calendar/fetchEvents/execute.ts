@@ -10,8 +10,10 @@ export async function fetchObjects(this: IExecuteFunctions, index: number): Prom
 	const calendarObjectUrl = this.getNodeParameter('calendar', index);
 	const startDateLeftString = this.getNodeParameter('start_date_left', index) as string;
 	const startDateRightString = this.getNodeParameter('start_date_right', index) as string;
-	const expandRecurring = this.getNodeParameter('expand_recurring', index) as boolean;
-	const showRawIcs = this.getNodeParameter('showRawIcs', index) as boolean;
+	const options = this.getNodeParameter('options', index) as {
+		expand_recurring?: boolean;
+		showRawIcs?: boolean;
+	};
 
 	// parse string to date in utc
 	const leftDate = new Date(FormatDatetime(startDateLeftString));
@@ -30,7 +32,7 @@ export async function fetchObjects(this: IExecuteFunctions, index: number): Prom
 			start: leftDate.toISOString(),
 			end: rightDate.toISOString()
 		},
-		expand: expandRecurring,
+		expand: options.expand_recurring ?? true,
 	});
 
 	const returnData: INodeExecutionData[] = [];
@@ -38,7 +40,7 @@ export async function fetchObjects(this: IExecuteFunctions, index: number): Prom
 	// Parse to events
 	for (const calendarObject of response) {
 		const parsed = convertIcsEvent(undefined, calendarObject.data as string);
-		returnData.push(createEventExecutionData(calendarObject, parsed, showRawIcs));
+		returnData.push(createEventExecutionData(calendarObject, parsed, options.showRawIcs ?? false));
 	}
 
 	return returnData;

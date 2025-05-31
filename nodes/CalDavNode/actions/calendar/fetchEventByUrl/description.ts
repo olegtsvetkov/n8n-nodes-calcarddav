@@ -33,16 +33,24 @@ export const description: CalendarProperties = [
 		description: 'URL of the event to fetch',
 	},
 	{
-		displayName: 'Show Raw ICS Data',
-		name: 'showRawIcs',
-		type: 'boolean',
-		default: false,
-		required: false,
+		displayName: 'Options',
+		name: 'options',
+		type: 'collection',
+		placeholder: 'Add Option',
+		default: {},
 		displayOptions: {
 			show: {
 				operation: ['fetchEventByUrl'],
 			},
 		},
-		description: 'Whether to include raw ICS data in the output',
-	}
+		options: [
+			{
+				displayName: 'Show Raw ICS Data',
+				name: 'showRawIcs',
+				type: 'boolean',
+				default: false,
+				description: 'Whether to include raw ICS data in the output',
+			},
+		],
+	},
 ]
