@@ -3,7 +3,7 @@ import {createClient} from "../../../../../transport/davClient";
 import {DAVCalendar} from "tsdav";
 import { FormatDatetime } from "../../../methods";
 import { createEventExecutionData } from "../methods";
-import { parseIcsEvent } from "@ts-ics/schema-zod";
+import { convertIcsEvent } from "ts-ics";
 
 export async function fetchObjects(this: IExecuteFunctions, index: number): Promise<INodeExecutionData[]> {
 	const client = await createClient(this, 'caldav');
@@ -37,7 +37,7 @@ export async function fetchObjects(this: IExecuteFunctions, index: number): Prom
 
 	// Parse to events
 	for (const calendarObject of response) {
-		const parsed = parseIcsEvent(calendarObject.data as string);
+		const parsed = convertIcsEvent(undefined, calendarObject.data as string);
 		returnData.push(createEventExecutionData(calendarObject, parsed, showRawIcs));
 	}
 

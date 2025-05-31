@@ -1,7 +1,6 @@
-import { IcsCalendar, IcsDateObject } from "ts-ics";
+import { convertIcsCalendar, IcsCalendar, IcsDateObject } from "ts-ics";
 import { DAVCalendarObject } from "tsdav";
 import { INodeExecutionData } from "n8n-workflow";
-import { parseIcsCalendar } from "@ts-ics/schema-zod";
 
 export interface CalendarEventHandle {
 	calendarUrl: string;
@@ -63,7 +62,7 @@ export function parseCalendarObject(calendarObject: DAVCalendarObject): Calendar
 		const icsData: string = calendarObject.data as string;
 		return {
 			success: true,
-			calendar: parseIcsCalendar(icsData)
+			calendar: convertIcsCalendar(undefined, icsData)
 		};
 	} catch (error) {
 		return {
