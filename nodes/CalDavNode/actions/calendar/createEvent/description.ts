@@ -6,7 +6,7 @@ import {CalendarProperties} from "../../Interface";
 // todo: add recurrence
 export const description: CalendarProperties = [
 	{
-		displayName: 'Calendar Name, URL or ID',
+		displayName: 'Calendar Name or ID',
 		name: 'calendar',
 		type: 'options',
 		typeOptions: {

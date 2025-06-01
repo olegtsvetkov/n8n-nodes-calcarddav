@@ -2,7 +2,7 @@ import {CalendarProperties} from "../../Interface";
 
 export const description: CalendarProperties = [
 	{
-		displayName: 'Calendar Name, URL or Name or ID',
+		displayName: 'Calendar Name or ID',
 		name: 'calendar',
 		type: 'options',
 		typeOptions: {
