@@ -14,18 +14,27 @@ import { FormatDatetime } from "../../../methods";
 type EventStatus = 'TENTATIVE' | 'CONFIRMED' | 'CANCELLED';
 
 export async function createEvent(this: IExecuteFunctions, index: number): Promise<INodeExecutionData[]> {
+	// Get main parameters
 	const eventTitle = this.getNodeParameter('event_title', index) as string;
-	const eventDescription = this.getNodeParameter('event_description', index) as string;
 	const eventIsAllDay = this.getNodeParameter('event_is_all_day', index) as string;
-	const eventLocation = this.getNodeParameter('event_location', index) as string;
-	const eventUrl = this.getNodeParameter('event_url', index) as string;
-	const eventStatus = this.getNodeParameter('event_status', index) as EventStatus;
+	const eventStartDate = this.getNodeParameter('event_start_date', index) as string;
+	const eventEndDate = this.getNodeParameter('event_end_date', index) as string;
 	const eventAlarms = this.getNodeParameter('event_alarms', index) as {
 		alarm?: Array<{
 			trigger: 'minutes_before' | 'hours_before' | 'days_before' | 'minutes_after' | 'hours_after' | 'days_after';
 			time_unit: number;
 		}>;
 	};
+
+	// Get additional parameters
+	const additionalParameters = this.getNodeParameter('additionalParameters', index, {}) as {
+		event_description?: string;
+		event_location?: string;
+		event_url?: string;
+		event_status?: EventStatus;
+	};
+
+	// Get options
 	const options = this.getNodeParameter('options', index, {}) as {
 		includeResponse?: boolean;
 		showRawIcs?: boolean;
@@ -40,10 +49,6 @@ export async function createEvent(this: IExecuteFunctions, index: number): Promi
 		return obj.url === calendarObjectUrl;
 	});
 
-	// Prepare iCal data
-	const eventStartDate = this.getNodeParameter('event_start_date', index) as string;
-	const eventEndDate = this.getNodeParameter('event_end_date', index) as string;
-
 	let startDate = new Date(FormatDatetime(eventStartDate));
 	let endDate = new Date(FormatDatetime(eventEndDate));
 
@@ -51,13 +56,13 @@ export async function createEvent(this: IExecuteFunctions, index: number): Promi
 	const baseEvent: Partial<IcsEvent> = {
 		uid: uuidv4(),
 		summary: eventTitle,
-		description: eventDescription,
-		status: eventStatus || 'CONFIRMED',
+		description: additionalParameters.event_description,
+		status: additionalParameters.event_status || 'CONFIRMED',
 		stamp: {
 			date: new Date(),
 		},
-		location: eventLocation,
-		url: eventUrl,
+		location: additionalParameters.event_location,
+		url: additionalParameters.event_url,
 	};
 
 	// Add alarms if provided
