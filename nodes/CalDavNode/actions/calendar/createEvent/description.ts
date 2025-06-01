@@ -6,7 +6,7 @@ import {CalendarProperties} from "../../Interface";
 // todo: add recurrence
 export const description: CalendarProperties = [
 	{
-		displayName: 'Calendar Selection',
+		displayName: 'Calendar Name, URL or ID',
 		name: 'calendar',
 		type: 'options',
 		typeOptions: {
@@ -21,7 +21,7 @@ export const description: CalendarProperties = [
 				operation: ['createEvent']
 			}
 		},
-		description: 'Select a calendar from your connected account or specify a calendar URL/ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>. This determines where the event will be created.',
+		description: 'Select a calendar from your connected account or specify a calendar URL/ID. This determines where the event will be created. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
 	{
 		displayName: 'Event Title',
@@ -109,39 +109,39 @@ export const description: CalendarProperties = [
 						type: 'options',
 						options: [
 							{
-								name: 'Minutes Before',
-								value: 'minutes_before',
-							},
-							{
-								name: 'Hours Before',
-								value: 'hours_before',
+								name: 'Days After',
+								value: 'days_after',
 							},
 							{
 								name: 'Days Before',
 								value: 'days_before',
 							},
 							{
-								name: 'Minutes After',
-								value: 'minutes_after',
-							},
-							{
 								name: 'Hours After',
 								value: 'hours_after',
 							},
 							{
-								name: 'Days After',
-								value: 'days_after',
+								name: 'Hours Before',
+								value: 'hours_before',
+							},
+							{
+								name: 'Minutes After',
+								value: 'minutes_after',
+							},
+							{
+								name: 'Minutes Before',
+								value: 'minutes_before',
 							},
 						],
 						default: 'minutes_before',
-						description: 'When the reminder should be triggered relative to the event time.',
+						description: 'When the reminder should be triggered relative to the event time',
 					},
 					{
 						displayName: 'Number of Time Units',
 						name: 'time_unit',
 						type: 'number',
 						default: 15,
-						description: 'The number of time units (minutes/hours/days) before or after the event when the reminder should be triggered.',
+						description: 'The number of time units (minutes/hours/days) before or after the event when the reminder should be triggered',
 					},
 				],
 			},
@@ -175,24 +175,17 @@ export const description: CalendarProperties = [
 				description: 'The physical or virtual location where the event takes place. Can be an address, room number, or virtual meeting link (e.g., Zoom URL).',
 			},
 			{
-				displayName: 'Website URL',
-				name: 'event_url',
-				type: 'string',
-				default: '',
-				description: 'A web link associated with the event. This could be a meeting platform link, event website, or any relevant online resource.',
-			},
-			{
 				displayName: 'Status',
 				name: 'event_status',
 				type: 'options',
 				options: [
 					{
-						name: 'Confirmed',
-						value: 'CONFIRMED',
-					},
-					{
 						name: 'Cancelled',
 						value: 'CANCELLED',
+					},
+					{
+						name: 'Confirmed',
+						value: 'CONFIRMED',
 					},
 					{
 						name: 'Tentative',
@@ -201,6 +194,13 @@ export const description: CalendarProperties = [
 				],
 				default: 'CONFIRMED',
 				description: 'The current state of the event. "Confirmed" means the event is definitely happening, "Tentative" indicates it might change, and "Cancelled" means it will not take place.',
+			},
+			{
+				displayName: 'Website URL',
+				name: 'event_url',
+				type: 'string',
+				default: '',
+				description: 'A web link associated with the event. This could be a meeting platform link, event website, or any relevant online resource.',
 			},
 		],
 	},
@@ -217,18 +217,18 @@ export const description: CalendarProperties = [
 		},
 		options: [
 			{
-				displayName: 'Include Server Response',
-				name: 'includeResponse',
-				type: 'boolean',
-				default: false,
-				description: 'When enabled, the node will include the complete server response in the output. This can be useful for debugging or when you need to verify the creation status.',
-			},
-			{
 				displayName: 'Include Raw Calendar Data',
 				name: 'showRawIcs',
 				type: 'boolean',
 				default: false,
-				description: 'When enabled, the node will include the raw iCalendar (ICS) data in the output. This contains the complete calendar data in the standard iCalendar format.',
+				description: 'Whether to include the raw iCalendar (ICS) data in the output. This contains the complete calendar data in the standard iCalendar format.',
+			},
+			{
+				displayName: 'Include Server Response',
+				name: 'includeResponse',
+				type: 'boolean',
+				default: false,
+				description: 'Whether to include the complete server response in the output. This can be useful for debugging or when you need to verify the creation status.',
 			},
 		],
 	},

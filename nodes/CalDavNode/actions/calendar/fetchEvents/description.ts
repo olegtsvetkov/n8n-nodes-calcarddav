@@ -2,7 +2,7 @@ import {CalendarProperties} from "../../Interface";
 
 export const description: CalendarProperties = [
 	{
-		displayName: 'Calendar Selection',
+		displayName: 'Calendar Name, URL or Name or ID',
 		name: 'calendar',
 		type: 'options',
 		typeOptions: {
@@ -17,7 +17,7 @@ export const description: CalendarProperties = [
 				operation: ['fetchEvents']
 			}
 		},
-		description: 'Select a calendar from your connected account or specify a calendar URL/ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>. This determines which calendar\'s events will be retrieved.',
+		description: 'Select a calendar from your connected account or specify a calendar URL/ID. This determines which calendar\'s events will be retrieved. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
 	{
 		displayName: 'Search Events From (Start Date)',
@@ -62,14 +62,14 @@ export const description: CalendarProperties = [
 				name: 'expand_recurring',
 				type: 'boolean',
 				default: true,
-				description: 'When enabled, recurring events (like weekly meetings) will be expanded into individual instances within the specified time range. When disabled, only the recurring event definition will be returned.',
+				description: 'Whether to expand recurring events (like weekly meetings) into individual instances within the specified time range. When disabled, only the recurring event definition will be returned.',
 			},
 			{
 				displayName: 'Include Raw Calendar Data',
 				name: 'showRawIcs',
 				type: 'boolean',
 				default: false,
-				description: 'Include the raw iCalendar (ICS) data in the output. This contains all the technical details of the event in the standard calendar format. Useful for debugging or advanced calendar integrations.',
+				description: 'Whether to include the raw iCalendar (ICS) data in the output. This contains all the technical details of the event in the standard calendar format. Useful for debugging or advanced calendar integrations.',
 			},
 		],
 	},

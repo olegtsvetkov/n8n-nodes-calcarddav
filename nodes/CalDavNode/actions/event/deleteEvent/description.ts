@@ -8,7 +8,7 @@ export const description: EventProperties = [
 		type: 'string',
 		default: '',
 		required: true,
-		description: 'The unique identifier of the event you want to delete. You can find this in the "_handle.url" field when you fetch an event. This is required to identify which specific event should be deleted.',
+		description: 'The unique identifier of the event you want to delete. You can find this in the "_handle.URL" field when you fetch an event. This is required to identify which specific event should be deleted.',
 		displayOptions: {
 			show: {
 				resource: ['event'],
@@ -48,7 +48,7 @@ export const description: EventProperties = [
 				name: 'includeResponse',
 				type: 'boolean',
 				default: false,
-				description: 'When enabled, the node will include the complete server response in the output. This can be useful for debugging or when you need to verify the deletion status.',
+				description: 'Whether to include the complete server response in the output. This can be useful for debugging or when you need to verify the deletion status.',
 			},
 		],
 	},

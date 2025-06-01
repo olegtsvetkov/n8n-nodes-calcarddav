@@ -2,7 +2,7 @@ import {CalendarProperties} from "../../Interface";
 
 export const description: CalendarProperties = [
 	{
-		displayName: 'Calendar Selection',
+		displayName: 'Calendar Name, URL or Name or ID',
 		name: 'calendar',
 		type: 'options',
 		typeOptions: {
@@ -17,7 +17,7 @@ export const description: CalendarProperties = [
 				operation: ['fetchEventByUrl']
 			}
 		},
-		description: 'Select a calendar from your connected account or specify a calendar URL/ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>. This determines which calendar contains the event you want to fetch.',
+		description: 'Select a calendar from your connected account or specify a calendar URL/ID. This determines which calendar contains the event you want to fetch. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
 	{
 		displayName: 'Event URL or ID',
@@ -49,7 +49,7 @@ export const description: CalendarProperties = [
 				name: 'showRawIcs',
 				type: 'boolean',
 				default: false,
-				description: 'Include the raw iCalendar (ICS) data in the output. This contains all the technical details of the event in the standard calendar format. Useful for debugging or when you need to access advanced event properties not shown in the standard output.',
+				description: 'Whether to include the raw iCalendar (ICS) data in the output. This contains all the technical details of the event in the standard calendar format. Useful for debugging or when you need to access advanced event properties not shown in the standard output.',
 			},
 		],
 	},
