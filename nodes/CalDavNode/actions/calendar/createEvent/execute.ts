@@ -1,16 +1,44 @@
 import {IExecuteFunctions, INodeExecutionData, NodeOperationError} from "n8n-workflow";
 import {createClient} from "../../../../../transport/davClient";
 import {DAVCalendar} from "tsdav";
-import {EventAttributes, createEvent as icsCreateEvent} from "ics";
+import { 
+	type IcsEvent, 
+	type IcsCalendar, 
+	generateIcsCalendar,
+	IcsAlarm,
+	IcsDuration
+} from "ts-ics";
 import { v4 as uuidv4 } from 'uuid';
+import { FormatDatetime } from "../../../methods";
 
-// @ts-ignore
-import ical from "ical"
+type EventStatus = 'TENTATIVE' | 'CONFIRMED' | 'CANCELLED';
 
 export async function createEvent(this: IExecuteFunctions, index: number): Promise<INodeExecutionData[]> {
+	// Get main parameters
 	const eventTitle = this.getNodeParameter('event_title', index) as string;
-	const eventDescription = this.getNodeParameter('event_description', index) as string;
 	const eventIsAllDay = this.getNodeParameter('event_is_all_day', index) as string;
+	const eventStartDate = this.getNodeParameter('event_start_date', index) as string;
+	const eventEndDate = this.getNodeParameter('event_end_date', index) as string;
+	const eventAlarms = this.getNodeParameter('event_alarms', index) as {
+		alarm?: Array<{
+			trigger: 'minutes_before' | 'hours_before' | 'days_before' | 'minutes_after' | 'hours_after' | 'days_after';
+			time_unit: number;
+		}>;
+	};
+
+	// Get additional parameters
+	const additionalParameters = this.getNodeParameter('additionalParameters', index, {}) as {
+		event_description?: string;
+		event_location?: string;
+		event_url?: string;
+		event_status?: EventStatus;
+	};
+
+	// Get options
+	const options = this.getNodeParameter('options', index, {}) as {
+		includeResponse?: boolean;
+		showRawIcs?: boolean;
+	};
 
 	const client = await createClient(this, 'caldav');
 	const calendarObjectUrl = this.getNodeParameter('calendar', index);
@@ -21,63 +49,85 @@ export async function createEvent(this: IExecuteFunctions, index: number): Promi
 		return obj.url === calendarObjectUrl;
 	});
 
-	// Prepare iCal data
-	const eventStartDate = this.getNodeParameter('event_start_date', index) as string;
-	const eventEndDate = this.getNodeParameter('event_end_date', index) as string;
+	let startDate = new Date(FormatDatetime(eventStartDate));
+	let endDate = new Date(FormatDatetime(eventEndDate));
 
-	let startDate = new Date(eventStartDate + 'Z');
-	let endDate = new Date(eventEndDate + 'Z');
+	// Prepare base event object
+	const baseEvent: Partial<IcsEvent> = {
+		uid: uuidv4(),
+		summary: eventTitle,
+		description: additionalParameters.event_description,
+		status: additionalParameters.event_status || 'CONFIRMED',
+		stamp: {
+			date: new Date(),
+		},
+		location: additionalParameters.event_location,
+		url: additionalParameters.event_url,
+	};
 
-	var event: EventAttributes
+	// Add alarms if provided
+	if (eventAlarms?.alarm?.length) {
+		baseEvent.alarms = eventAlarms.alarm.map(alarm => {
+			const [unit, direction] = alarm.trigger.split('_') as [string, 'before' | 'after'];
+			
+			const trigger = direction === 'before' ? -alarm.time_unit : alarm.time_unit;
+
+			const duration: IcsDuration = {};
+
+			if (unit === 'minutes') {
+				duration.minutes = trigger;
+			} else if (unit === 'hours') {
+				duration.hours = trigger;
+			} else if (unit === 'days') {
+				duration.days = trigger;
+			}
+
+			return {
+				action: 'DISPLAY',
+				trigger: {
+					type: 'relative',
+					value: duration,
+				},
+				description: eventTitle,
+			} as IcsAlarm;
+		});
+	}
+
+	let event: IcsEvent;
 
 	if (eventIsAllDay === 'yes') {
 		const aDayInMs = 24 * 60 * 60 * 1000;
 		const daysDiff = Math.abs(Math.ceil((startDate.getTime() - endDate.getTime()) / aDayInMs));
 
 		event = {
-			uid: uuidv4(),
-			title: eventTitle,
-			description: eventDescription,
-			status: 'CONFIRMED',
-			start: [
-				startDate.getFullYear(),
-				startDate.getMonth() + 1,
-				startDate.getDate(),
-			],
+			...baseEvent,
+			start: {
+				date: startDate,
+				type: "DATE"
+			},
 			duration: {
 				days: daysDiff + 1,
 			},
-		};
+		} as IcsEvent;
 	} else {
 		event = {
-			uid: uuidv4(),
-			title: eventTitle,
-			description: eventDescription,
-			status: 'CONFIRMED',
-			start: [
-				startDate.getFullYear(),
-				startDate.getMonth() + 1,
-				startDate.getDate(),
-				startDate.getHours(),
-				startDate.getMinutes(),
-			],
-			end: [
-				endDate.getFullYear(),
-				endDate.getMonth() + 1,
-				endDate.getDate(),
-				endDate.getHours(),
-				endDate.getMinutes(),
-			],
-		}
+			...baseEvent,
+			start: {
+				date: startDate,
+			},
+			end: {
+				date: endDate,
+			},
+		} as IcsEvent;
 	}
 
-	const { error, value: iCalString } = icsCreateEvent(event);
-	if (error) {
-		throw new NodeOperationError(
-			this.getNode(),
-			`Unable to create iCalendar event`,
-		);
+	const icsCalendar: IcsCalendar = {
+		version: "2.0",
+		prodId: "n8n-nodes-calcarddav",
+		events: [event],
 	}
+
+	const iCalString = generateIcsCalendar(icsCalendar);
 
 	// Perform event creation on remote server
 	const result = await client.createCalendarObject({
@@ -93,8 +143,12 @@ export async function createEvent(this: IExecuteFunctions, index: number): Promi
 		);
 	}
 
-	return this.helpers.returnJsonArray({
+	// Prepare the response based on the options
+	const response = {
 		ok: true,
-		result: result,
-	});
+		...(options.showRawIcs ? { ics: iCalString } : {}),
+		...(options.includeResponse ? { result } : {}),
+	};
+
+	return this.helpers.returnJsonArray(response);
 }

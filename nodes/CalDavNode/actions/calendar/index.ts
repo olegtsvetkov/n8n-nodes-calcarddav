@@ -1,8 +1,9 @@
 import {INodeProperties} from "n8n-workflow";
 import * as fetchEvents from './fetchEvents'
+import * as fetchEventByUrl from './fetchEventByUrl'
 import * as createEvent from './createEvent'
 
-export {fetchEvents, createEvent}
+export {fetchEvents, fetchEventByUrl, createEvent}
 export const descriptions: INodeProperties[] = [
 	{
 		displayName: 'Operation',
@@ -22,6 +23,12 @@ export const descriptions: INodeProperties[] = [
 				action: 'Fetch events from calendar'
 			},
 			{
+				name: 'Fetch Events By Url',
+				value: 'fetchEventByUrl',
+				description: 'Fetch event by URL from calendar',
+				action: 'Fetch event by URL from calendar'
+			},
+			{
 				name: 'Create Event',
 				value: 'createEvent',
 				description: 'Create event in calendar',
@@ -31,5 +38,6 @@ export const descriptions: INodeProperties[] = [
 		default: 'fetchEvents'
 	},
 	...fetchEvents.description,
+	...fetchEventByUrl.description,
 	...createEvent.description
 ]

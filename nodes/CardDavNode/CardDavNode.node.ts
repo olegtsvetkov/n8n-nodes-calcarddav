@@ -3,7 +3,7 @@ import {
 	IExecuteFunctions,
 	INodeExecutionData,
 	INodeType,
-	INodeTypeDescription, NodeOperationError,
+	INodeTypeDescription, NodeConnectionType, NodeOperationError,
 } from 'n8n-workflow';
 import {addressBook, contact} from "./actions";
 import {loadOptions} from "./methods";
@@ -27,8 +27,8 @@ export class CardDavNode implements INodeType {
 				required: false,
 			},
 		],
-		inputs: ['main'],
-		outputs: ['main'],
+		inputs: ['main'] as NodeConnectionType[],
+		outputs: ['main'] as NodeConnectionType[],
 		properties: [
 			{
 				displayName: 'Resource',
