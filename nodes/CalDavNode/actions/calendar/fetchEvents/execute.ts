@@ -14,6 +14,7 @@ export async function fetchObjects(this: IExecuteFunctions, index: number): Prom
 		expand_recurring?: boolean;
 		showRawIcs?: boolean;
 		useMultiGet?: boolean;
+		urlFilter?: string;
 	};
 
 	// parse string to date in utc
@@ -35,6 +36,16 @@ export async function fetchObjects(this: IExecuteFunctions, index: number): Prom
 		},
 		useMultiGet: options.useMultiGet ?? true,
 		expand: options.expand_recurring ?? true,
+		urlFilter: (url: string) => {
+			// If no filter is specified, return all
+			if (!options.urlFilter || options.urlFilter.trim() === '') {
+				return true;
+			}
+			
+			// Use regexp filter if provided
+			const regex = new RegExp(options.urlFilter ?? /\.ics/);
+			return regex.test(url);
+		}
 	});
 
 	const returnData: INodeExecutionData[] = [];
