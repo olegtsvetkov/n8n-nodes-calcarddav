@@ -71,6 +71,21 @@ export const description: CalendarProperties = [
 				default: false,
 				description: 'Whether to include the raw iCalendar (ICS) data in the output. This contains all the technical details of the event in the standard calendar format. Useful for debugging or advanced calendar integrations.',
 			},
+			{
+				displayName: 'Use Multi-Get',
+				name: 'useMultiGet',
+				type: 'boolean',
+				default: true,
+				description: 'Whether to use calendarMultiGet as underlying function to fetch calendar objects. If set to false, it will use calendarQuery to fetch instead. Helps for backward compatibility with some providers.',
+			},
+			{
+				displayName: 'URL Filter',
+				name: 'urlFilter',
+				type: 'string',
+				default: '\\.ics',
+				description: 'Filter events by URL using regular expressions before fetching details. Leave empty to include all events.',
+				placeholder: 'e.g., .*meeting.* or leave empty for all',
+			},
 		],
 	},
 ]
