@@ -1,12 +1,12 @@
 {
   "name": "@olegtsvetkov/n8n-nodes-calcarddav",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Use CalDAV and CardDAV APIs",
   "keywords": [
     "n8n-community-node-package"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/TobiasMende/n8n-nodes-calcarddav",
+  "homepage": "https://github.com/olegtsvetkov/n8n-nodes-calcarddav",
   "author": {
     "name": "Oleg Tsvetkov",
     "email": "me@olegtsvetkov.com"
