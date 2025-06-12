@@ -13,6 +13,7 @@ export async function fetchObjects(this: IExecuteFunctions, index: number): Prom
 	const options = this.getNodeParameter('options', index) as {
 		expand_recurring?: boolean;
 		showRawIcs?: boolean;
+		useMultiGet?: boolean;
 	};
 
 	// parse string to date in utc
@@ -32,6 +33,7 @@ export async function fetchObjects(this: IExecuteFunctions, index: number): Prom
 			start: leftDate.toISOString(),
 			end: rightDate.toISOString()
 		},
+		useMultiGet: options.useMultiGet ?? true,
 		expand: options.expand_recurring ?? true,
 	});
 
