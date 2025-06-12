@@ -16,14 +16,34 @@ export interface CalendarParseResult {
 export function transformEventDates(event: Record<string, any>): Record<string, any> {
 	const transformedEvent = { ...event };
 
-	Object.keys(transformedEvent).forEach(key => {
-		const value = transformedEvent[key];
-		if (value && typeof value === 'object' && 'type' in value && (value.type === 'DATE-TIME' || value.type === 'DATE')) {
-			transformedEvent[key] = (value as IcsDateObject).date;
+	function transformDatesRecursively(obj: any): any {
+		if (obj && typeof obj === 'object') {
+			// Handle arrays
+			if (Array.isArray(obj)) {
+				return obj.map(item => transformDatesRecursively(item));
+			}
+			
+			// Handle objects
+			const result = { ...obj };
+			Object.keys(result).forEach(key => {
+				const value = result[key];
+				
+				// Check if this is a date object with type field
+				if (value && typeof value === 'object' && 'type' in value && (value.type === 'DATE-TIME' || value.type === 'DATE')) {
+					result[key] = new Date((value as IcsDateObject).date).toISOString();
+				} else {
+					// Recursively transform nested objects and arrays
+					result[key] = transformDatesRecursively(value);
+				}
+			});
+			return result;
 		}
-	});
+		
+		// Return primitive values as-is
+		return obj;
+	}
 
-	return transformedEvent;
+	return transformDatesRecursively(transformedEvent);
 }
 
 export function createEventExecutionData(
